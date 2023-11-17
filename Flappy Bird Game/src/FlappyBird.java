@@ -36,12 +36,11 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 	public Random rand;
 
+	JFrame jframe = new JFrame();
+	//Game window
+	Timer timer = new Timer(20, this);
 	public FlappyBird()
 	{
-		JFrame jframe = new JFrame();
-			//Game window
-		Timer timer = new Timer(20, this);
-
 		renderer = new Renderer();
 		rand = new Random();
 
@@ -58,6 +57,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 			//Drawing the bird
 		columns = new ArrayList<Rectangle>();
 
+			//Initial columns
 		addColumn(true);
 		addColumn(true);
 		addColumn(true);
@@ -66,6 +66,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		timer.start();
 	}
 
+		//Adding columns
 	public void addColumn(boolean start)
 	{
 		int space = 300;
@@ -84,14 +85,16 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		}
 	}
 
+		//Displaying column on screen
 	public void paintColumn(Graphics g, Rectangle column)
 	{
 		g.setColor(Color.green.darker());
 		g.fillRect(column.x, column.y, column.width, column.height);
 	}
 
+		//Moving the bird
 	public void jump()
-	{
+	{		//Setup the start screen
 		if (gameOver)
 		{
 			bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
@@ -106,7 +109,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 			gameOver = false;
 		}
-
+			//Starting the game if not started
 		if (!started)
 		{
 			started = true;
@@ -117,7 +120,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 			{
 				yMotion = 0;
 			}
-
+				//Bird is always moving downwards
 			yMotion -= 14;
 		}
 	}
@@ -130,7 +133,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		ticks++;
 
 		if (started)
-		{
+		{		//Keeps columns moving left
 			for (int i = 0; i < columns.size(); i++)
 			{
 				Rectangle column = columns.get(i);
@@ -143,6 +146,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 				yMotion += 3;
 			}
 
+				//Removes columns that are outside GUI boundaries
 			for (int i = 0; i < columns.size(); i++)
 			{
 				Rectangle column = columns.get(i);
@@ -158,11 +162,13 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 				}
 			}
 
+				//moves the bird up and down
 			bird.y += yMotion;
 
+				//Checking if bird has hit a column
 			for (Rectangle column : columns)
 			{
-				if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - speed && bird.x + bird.width / 2 < column.x + column.width / 2 + speed)
+				if (!gameOver && column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - speed && bird.x + bird.width / 2 < column.x + column.width / 2 + speed)
 				{
 					score++;
 				}
@@ -190,6 +196,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 				}
 			}
 
+				//Checks if bird hits top or ground
 			if (bird.y > HEIGHT - 120 || bird.y < 0)
 			{
 				gameOver = true;
@@ -201,49 +208,68 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 				gameOver = true;
 			}
 		}
-
+			//Updates renderer
 		renderer.repaint();
 	}
 
+		//Displaying updated game screens
 	public void repaint(Graphics g)
 	{
+			//Background
 		g.setColor(Color.cyan);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-
+			//ground
 		g.setColor(Color.orange);
 		g.fillRect(0, HEIGHT - 120, WIDTH, 120);
 
 		g.setColor(Color.green);
 		g.fillRect(0, HEIGHT - 120, WIDTH, 20);
-
+			//bird
 		g.setColor(Color.red);
 		g.fillRect(bird.x, bird.y, bird.width, bird.height);
-
+			//columns
 		for (Rectangle column : columns)
 		{
 			paintColumn(g, column);
 		}
-
+			//On Screen messages
+		Font font1 = new Font("Arial", Font.PLAIN, 50);
+		Font font2 = new Font("Courier New", Font.BOLD, 100);
+		Font font3 = new Font("Courier New", Font.BOLD, 125);
 		g.setColor(Color.black);
-		g.setFont(new Font("Comic Sans", 1, 100));
 
 		if (!started)
-		{
-			g.drawString("Click to Start!", 75, HEIGHT / 2 - 50);
+		{		//Start screen message
+			g.setFont(font1);
+			g.drawString("Press Space to Start!", 155, HEIGHT / 2 + 100);
 		}
 
 		if (gameOver)
-		{
-
-			g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
-			g.drawString("Game Over!", 120, HEIGHT / 2 - 50);
-			g.drawString("Click to Restart", 25, HEIGHT / 2 + 75);
+		{		//Game over screen
+				//columns keep moving and score is displayed
+			bird = new Rectangle();
+			g.setFont(font2);
+			if (score >= 10) {
+				g.drawString(String.valueOf(score), WIDTH / 2 - 35, 100);
+			} else {
+				g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+			}
+			g.setFont(font3);
+			g.drawString("GAME OVER", 60, HEIGHT / 2 - 50);
+			g.setFont(font1);
+			g.drawString("Press Space to Restart", 145, HEIGHT / 2 + 100);
 
 		}
 
 		if (!gameOver && started)
-		{
-			g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+		{	//Continuously displays score
+			g.setFont(font2);
+			if (score >= 10) {
+				g.drawString(String.valueOf(score), WIDTH / 2 - 35, 100);
+			} else {
+				g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+			}
+
 		}
 	}
 
@@ -252,12 +278,15 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		flappyBird = new FlappyBird();
 	}
 
+
+		//Bird jumps when mouse is clicked
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		jump();
+		//jump();
 	}
 
+		//Bird jumps when spacebar is pressed
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
