@@ -1,5 +1,3 @@
-package flappyBird;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -22,12 +20,15 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 	public static FlappyBird flappyBird;
 
 	public final int WIDTH = 800, HEIGHT = 800;
+		//Dimensions of GUI
 
 	public Renderer renderer;
+		//Renderer instance for graphics
 
 	public Rectangle bird;
 
 	public ArrayList<Rectangle> columns;
+		//Arraylist for storing columns
 
 	public int ticks, yMotion, score;
 
@@ -38,6 +39,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 	public FlappyBird()
 	{
 		JFrame jframe = new JFrame();
+			//Game window
 		Timer timer = new Timer(20, this);
 
 		renderer = new Renderer();
@@ -53,6 +55,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 		jframe.setVisible(true);
 
 		bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+			//Drawing the bird
 		columns = new ArrayList<Rectangle>();
 
 		addColumn(true);
@@ -67,7 +70,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 	{
 		int space = 300;
 		int width = 100;
-		int height = 50 + rand.nextInt(300);
+		int height = 10 + rand.nextInt(470);
 
 		if (start)
 		{
@@ -221,7 +224,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 			paintColumn(g, column);
 		}
 
-		g.setColor(Color.white);
+		g.setColor(Color.black);
 		g.setFont(new Font("Comic Sans", 1, 100));
 
 		if (!started)
@@ -231,9 +234,10 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener
 
 		if (gameOver)
 		{
+
 			g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
 			g.drawString("Game Over!", 120, HEIGHT / 2 - 50);
-			g.drawString("Click to Restart!", 45, HEIGHT / 2 + 75);
+			g.drawString("Click to Restart", 25, HEIGHT / 2 + 75);
 
 		}
 
