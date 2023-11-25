@@ -25,10 +25,11 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 	public Rectangle bird;
 
 	public ArrayList<Rectangle> columns;
+
 	public ArrayList<Integer> highScore;
 	//Arraylist for storing columns
 
-	public int ticks, yMotion, score;
+	public int ticks, yMotion, score, high;
 
 	public boolean gameOver, started;
 
@@ -115,7 +116,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 	}
 
 	public int findHighScore(ArrayList <Integer> e){
-		int high = e.indexOf(0);
+		high = e.indexOf(0);
 		for(int i = 0; i < e.size() - 1; i++){
 			if(high < e.indexOf(i + 1)){
 				high = e.indexOf(i + 1);
