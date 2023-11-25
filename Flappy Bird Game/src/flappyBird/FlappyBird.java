@@ -117,7 +117,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 
 	public int findHighScore(ArrayList <Integer> e){
 		high = e.indexOf(0);
-		for(int i = 0; i < e.size() - 1; i++){
+		for(int i = 0; i < e.size(); i++){
 			if(high < e.indexOf(i + 1)){
 				high = e.indexOf(i + 1);
 			}
