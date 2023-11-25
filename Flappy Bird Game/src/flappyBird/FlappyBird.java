@@ -15,7 +15,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class FlappyBird implements ActionListener, MouseListener, KeyListener{
+public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 	public static FlappyBird flappyBird;
 
 	public final int WIDTH = 800, HEIGHT = 800;
@@ -27,8 +27,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 	public Rectangle bird;
 
 	public ArrayList<Rectangle> columns;
-
-	public ArrayList<Integer> highScore;
+	public ArrayList<Integer> highScore = new ArrayList<>();
 	//Arraylist for storing columns
 
 	public int ticks, yMotion, score, high;
@@ -69,12 +68,12 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 	}
 
 	//Adding columns
-	public void addColumn(boolean start){
+	public void addColumn(boolean start) {
 		int space = 300;
 		int width = 100;
 		int height = 10 + rand.nextInt(470);
 
-		if (start){
+		if (start) {
 			columns.add(new Rectangle(WIDTH + width + columns.size() * 300, HEIGHT - height - 120, width, height));
 			columns.add(new Rectangle(WIDTH + width + (columns.size() - 1) * 300, 0, width, HEIGHT - height - space));
 		} else {
@@ -84,14 +83,14 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 	}
 
 	//Displaying column on screen
-	public void paintColumn(Graphics g, Rectangle column){
+	public void paintColumn(Graphics g, Rectangle column) {
 		g.setColor(Color.green.darker());
 		g.fillRect(column.x, column.y, column.width, column.height);
 	}
 
 	//Moving the bird
-	public void jump(){		//Setup the start screen
-		if (gameOver){
+	public void jump() {        //Setup the start screen
+		if (gameOver) {
 			timer.start();
 			bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
 			columns.clear();
@@ -117,10 +116,10 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 		}
 	}
 
-	public int findHighScore(ArrayList <Integer> e){
+	public int findHighScore(ArrayList<Integer> e) {
 		high = e.indexOf(0);
-		for(int i = 0; i < e.size(); i++){
-			if(high < e.indexOf(i + 1)){
+		for (int i = 0; i < e.size(); i++) {
+			if (high < e.indexOf(i + 1)) {
 				high = e.indexOf(i + 1);
 			}
 		}
@@ -131,7 +130,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 	public void actionPerformed(ActionEvent e) {
 		int speed = 10;
 		ticks++;
-		if (started) {		//Keeps columns moving left
+		if (started) {        //Keeps columns moving left
 			for (int i = 0; i < columns.size(); i++) {
 				Rectangle column = columns.get(i);
 				column.x -= speed;
@@ -159,13 +158,12 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 					score++;
 				}
 				if (column.intersects(bird)) {
-					gameOver = true;
 					highScore.add(score);
 					findHighScore(highScore);
+					gameOver = true;
 					if (bird.x <= column.x) {
 						bird.x = column.x - bird.width;
-					}
-					else {
+					} else {
 						if (column.y != 0) {
 							bird.y = column.y - bird.height;
 						} else if (bird.y < column.height) {
@@ -177,16 +175,16 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 
 			//Checks if bird hits top or ground
 			if (bird.y > HEIGHT - 120 || bird.y < 0) {
-				gameOver = true;
 				highScore.add(score);
 				findHighScore(highScore);
+				gameOver = true;
 			}
 
 			if (bird.y + yMotion >= HEIGHT - 120) {
 				bird.y = HEIGHT - 120 - bird.height;
-				gameOver = true;
 				highScore.add(score);
 				findHighScore(highScore);
+				gameOver = true;
 			}
 		}
 		//Updates renderer
@@ -245,7 +243,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener{
 			g.drawString("Press Space to Restart", 145, HEIGHT / 2 + 100);
 		}
 
-		if (!gameOver && started) {	//Continuously displays score
+		if (!gameOver && started) {    //Continuously displays score
 			g.setFont(font2);
 			if (score >= 10) {
 				g.drawString(String.valueOf(score), WIDTH / 2 - 35, 100);
