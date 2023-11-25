@@ -218,6 +218,7 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 		Font font1 = new Font("Arial", Font.PLAIN, 50);
 		Font font2 = new Font("Courier New", Font.BOLD, 100);
 		Font font3 = new Font("Courier New", Font.BOLD, 125);
+		Font font4 = new Font("Arial", Font.PLAIN, 35);
 		g.setColor(Color.black);
 
 		//Start screen message
@@ -241,6 +242,8 @@ public class FlappyBird implements ActionListener, MouseListener, KeyListener {
 			g.drawString("GAME OVER", 60, HEIGHT / 2 - 50);
 			g.setFont(font1);
 			g.drawString("Press Space to Restart", 145, HEIGHT / 2 + 100);
+			g.setFont(font4);
+			g.drawString("HIGHSCORE: " +high, 0, 30 );
 		}
 
 		if (!gameOver && started) {    //Continuously displays score
